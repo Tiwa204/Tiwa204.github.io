@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roland Bada – Data Analyst Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f1;--card:#ffffff;--ink:#16302b;--mute:#5d716c;--line:#d6dfda;--a:#1f7a6b;--b:#d9962b;--c:#c4503a;--d:#3d6fb0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101b18;--card:#172622;--ink:#e6efeb;--mute:#97aba5;--line:#2a3e38;--a:#4cc2ad;--b:#e8b04e;--c:#ee8068;--d:#78a6e0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101b18;--card:#172622;--ink:#e6efeb;--mute:#97aba5;--line:#2a3e38;--a:#4cc2ad;--b:#e8b04e;--c:#ee8068;--d:#78a6e0;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Instrument Sans",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,h3{font-family:Newsreader,Georgia,serif;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px);font-weight:700}
+h2{font-size:26px;margin-bottom:6px}
+h3{font-size:18px;font-weight:500;margin-bottom:10px}
+.lead{max-width:60ch;color:var(--mute);margin:12px 0 18px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px;padding:0;list-style:none}
+.tags li{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:14px;background:var(--card)}
+.contact{font-size:14px;color:var(--mute)}
+.contact a{color:var(--a)}
+.note{border-left:4px solid var(--b);background:var(--card);padding:10px 14px;margin:26px 0 14px;font-size:14px;color:var(--mute)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+.tabs button{flex:0 0 auto;font:inherit;font-weight:500;padding:9px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs button:focus-visible{outline:3px solid var(--d);outline-offset:2px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi b{display:block;font:700 28px/1.1 Newsreader,Georgia,serif}
+.kpi span{font-size:13px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.panel p{margin:0 0 8px;font-size:13px;color:var(--mute)}
+svg{width:100%;height:auto;display:block;overflow:visible}
+svg text{font:12px "Instrument Sans",system-ui,sans-serif;fill:var(--mute)}
+.about{margin-top:34px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.about ul{margin:0;padding-left:18px}
+footer{margin-top:30px;font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Roland Bada</h1>
+<p class="lead">Data analyst who turns operational, safety and financial records into dashboards that managers can act on. Four sample dashboards are below, one for each area I’ve worked in.</p>
+<ul class="tags"><li>Power BI</li><li>SQL</li><li>Advanced Excel</li><li>n8n automation</li><li>HSE</li><li>Bookkeeping</li></ul>
+<p class="contact">Lagos, Nigeria · <a href="mailto:rolandtemibada@gmail.com">rolandtemibada@gmail.com</a> · <a href="https://www.linkedin.com/in/badarolandfemi">LinkedIn</a></p>
+</header>
+
+<p class="note">All figures in these dashboards are sample data created for demonstration. They are modelled on the kind of work I’ve done, not real company records.</p>
+
+<div class="tabs" role="tablist" id="tabs"></div>
+<section id="view"></section>
+
+<section class="about">
+<div class="panel"><h3>What I’ve done</h3><ul>
+<li>Tracked 20 safety KPIs across 5 construction sites as HSE &amp; Data Analyst Officer</li>
+<li>Built 10 Power BI dashboards at Prince De Maritime International</li>
+<li>Prepared financial reports for a ₦5M budget at Mount Carmel</li>
+<li>Trained 450 learners in digital skills, with an 80% completion rate</li></ul></div>
+<div class="panel"><h3>Certificates</h3><ul>
+<li>Data Analysis, Cisco Networking Academy</li>
+<li>Cybersecurity, Cisco Networking Academy</li>
+<li>Professional HSE Level 3, Safeguard Safety and Management Center, 2026</li></ul></div>
+</section>
+<footer>B.Sc. Chemistry, Ekiti State University, 2025</footer>
+</div>
+
+<script>
+var NS="http://www.w3.org/2000/svg";
+function svg(w,h){var s=document.createElementNS(NS,"svg");s.setAttribute("viewBox","0 0 "+w+" "+h);s.setAttribute("role","img");return s}
+function el(p,t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!==undefined)e.textContent=x;p.appendChild(e);return e}
+function bars(L,V,col,fmt){var w=340,h=190,m=26,s=svg(w,h),mx=Math.max.apply(null,V)*1.15,bw=(w-20)/L.length;
+ V.forEach(function(v,i){var bh=(h-m-10)*v/mx,x=10+i*bw+bw*.15;
+  el(s,"rect",{x:x,y:h-m-bh,width:bw*.7,height:bh,rx:3,fill:col});
+  el(s,"text",{x:x+bw*.35,y:h-m-bh-5,"text-anchor":"middle"},fmt?fmt(v):v);
+  el(s,"text",{x:x+bw*.35,y:h-8,"text-anchor":"middle"},L[i])});return s}
+function hbars(L,V,col,fmt,mx){var w=340,rh=34,h=L.length*rh+6,s=svg(w,h);mx=mx||Math.max.apply(null,V)*1.1;
+ L.forEach(function(l,i){var y=i*rh+4,bw=(w-130)*V[i]/mx;
+  el(s,"text",{x:0,y:y+17},l);
+  el(s,"rect",{x:100,y:y+4,width:bw,height:16,rx:3,fill:col});
+  el(s,"text",{x:106+bw,y:y+17},fmt?fmt(V[i]):V[i])});return s}
+function line(L,V,col,fmt,lo){var w=340,h=190,m=26,s=svg(w,h),mn=lo,mx=Math.max.apply(null,V),n=V.length,pts=[];
+ V.forEach(function(v,i){var x=20+i*(w-40)/(n-1),y=10+(h-m-20)*(1-(v-mn)/(mx-mn));pts.push([x,y])});
+ el(s,"polyline",{points:pts.map(function(p){return p.join(",")}).join(" "),fill:"none",stroke:col,"stroke-width":3,"stroke-linejoin":"round"});
+ pts.forEach(function(p,i){el(s,"circle",{cx:p[0],cy:p[1],r:4,fill:col});el(s,"text",{x:p[0],y:p[1]-9,"text-anchor":"middle"},fmt?fmt(V[i]):V[i]);el(s,"text",{x:p[0],y:h-8,"text-anchor":"middle"},L[i])});return s}
+function stack(parts){var w=340,s=svg(w,70),x=0,tot=parts.reduce(function(a,p){return a+p.v},0);
+ parts.forEach(function(p,i){var bw=w*p.v/tot;el(s,"rect",{x:x,y:8,width:bw,height:26,fill:p.c});el(s,"text",{x:x,y:56},p.l+": "+p.v);x+=bw});return s}
+var pct=function(v){return v+"%"};
+var D=[
+{id:"hse",name:"HSE safety",kpis:[["5","Sites covered"],["25","Workers"],["20","KPIs tracked"],["2.2","Incidents a month"]],
+ p:[["Incidents by month","May to October",function(){return bars(["May","Jun","Jul","Aug","Sep","Oct"],[3,2,2,1,3,2],"var(--c)")}],
+    ["Inspection compliance by site","Share of checklist items passed",function(){return hbars(["Site A","Site B","Site C","Site D","Site E"],[94,88,91,96,85],"var(--a)",pct,100)}],
+    ["Incident types","13 incidents in total",function(){return hbars(["Slip or trip","Missing PPE","Equipment","Other"],[5,4,2,2],"var(--b)")}]]},
+{id:"ops",name:"Operations KPIs",kpis:[["95%","On-time delivery"],["$100K","Cost savings"],["10","Dashboards"],["50","Records cleaned"]],
+ p:[["On-time delivery rate","Monthly, percent",function(){return line(["Jan","Feb","Mar","Apr","May","Jun"],[86,88,87,91,93,95],"var(--a)",pct,84)}],
+    ["Cumulative cost savings","Thousands of dollars",function(){return bars(["Jan","Feb","Mar","Apr","May","Jun"],[8,19,34,52,75,100],"var(--d)",function(v){return "$"+v+"K"})}],
+    ["Where costs go","Share of total spend",function(){return hbars(["Fuel","Port fees","Handling","Admin"],[38,27,19,16],"var(--b)",pct,45)}]]},
+{id:"fin",name:"Finance",kpis:[["₦5.0M","Annual budget"],["₦4.75M","Spent"],["₦0.25M","Under budget"],["4","Quarterly reports"]],
+ p:[["Spending by quarter","Millions of naira, budget is 1.25 per quarter",function(){return bars(["Q1","Q2","Q3","Q4"],[1.10,1.30,1.20,1.15],"var(--a)",function(v){return v.toFixed(2)})}],
+    ["Receivables by age","Thousands of naira outstanding",function(){return hbars(["0–30 days","31–60 days","61–90 days","90+ days"],[420,250,120,60],"var(--c)")}],
+    ["Account reconciliation","Items matched in the last review",function(){return stack([{l:"Matched",v:96,c:"var(--a)"},{l:"Flagged",v:4,c:"var(--c)"}])}]]},
+{id:"learn",name:"Training",kpis:[["450","Learners"],["80%","Completion rate"],["360","Completed"],["4","Course modules"]],
+ p:[["Completion rate by module","Percent of learners who finished",function(){return hbars(["Computer basics","Internet use","Office tools","AI prompting","Cybersecurity"],[92,86,81,74,70],"var(--a)",pct,100)}],
+    ["Completed vs not completed","450 learners",function(){return stack([{l:"Completed",v:360,c:"var(--a)"},{l:"Not completed",v:90,c:"var(--c)"}])}],
+    ["Learners per month","Enrolment by month",function(){return bars(["Nov","Dec","Jan","Feb","Mar","Apr"],[60,45,80,95,90,80],"var(--d)")}]]}
+];
+var tabs=document.getElementById("tabs"),view=document.getElementById("view");
+function show(i){
+ Array.prototype.forEach.call(tabs.children,function(b,j){b.setAttribute("aria-selected",j===i?"true":"false")});
+ var d=D[i];view.innerHTML="";
+ var k=document.createElement("div");k.className="kpis";
+ d.kpis.forEach(function(x){var e=document.createElement("div");e.className="kpi";e.innerHTML="<b>"+x[0]+"</b><span>"+x[1]+"</span>";k.appendChild(e)});
+ view.appendChild(k);
+ var g=document.createElement("div");g.className="grid";
+ d.p.forEach(function(p){var e=document.createElement("div");e.className="panel";
+  var t=document.createElement("h3");t.textContent=p[0];var s=document.createElement("p");s.textContent=p[1];
+  e.appendChild(t);e.appendChild(s);var c=p[2]();c.setAttribute("aria-label",p[0]);e.appendChild(c);g.appendChild(e)});
+ view.appendChild(g);
+}
+D.forEach(function(d,i){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.textContent=d.name;b.onclick=function(){show(i)};tabs.appendChild(b)});
+show(0);
+</script>
+</body>
+</html>

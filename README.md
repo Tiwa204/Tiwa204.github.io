@@ -2,7 +2,7 @@
 
 Live site: https://tiwa204.github.io
 
-I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and financial records into dashboards that managers can act on. This portfolio has four sample dashboards, one for each area I've worked in.
+I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and financial records into dashboards that managers can act on. This portfolio has five dashboards: four samples, one for each area I've worked in, and a retail sales report I built in Power BI.
 
 ## Dashboards
 
@@ -10,8 +10,9 @@ I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and finan
 - **Operations KPIs:** on-time delivery, cumulative cost savings, and cost breakdown.
 - **Finance:** spending against a ₦5M budget, receivables by age, and account reconciliation.
 - **Training:** completion rates by module for 450 learners.
+- **Retail sales:** monthly sales trend, revenue by state, top 10 products, and revenue by category, rebuilt from my ShopSmart Retail Sales Analysis report in Power BI (2025 data, ₦7.58B in sales across 50,000 orders).
 
-**Note:** all figures in the dashboards are sample data created for demonstration. They are not real company records.
+**Note:** the first four dashboards use sample data created for demonstration. They are not real company records.
 
 ## Experience
 

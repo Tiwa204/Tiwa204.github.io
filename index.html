@@ -46,12 +46,12 @@ footer{margin-top:30px;font-size:13px;color:var(--mute)}
 <div class="wrap">
 <header>
 <h1>Roland Bada</h1>
-<p class="lead">Data analyst who turns operational, safety and financial records into dashboards that managers can act on. Four sample dashboards are below, one for each area I’ve worked in.</p>
+<p class="lead">Data analyst who turns operational, safety and financial records into dashboards that managers can act on. Five dashboards are below: four samples, one for each area I’ve worked in, and a retail sales report I built in Power BI.</p>
 <ul class="tags"><li>Power BI</li><li>SQL</li><li>Advanced Excel</li><li>n8n automation</li><li>HSE</li><li>Bookkeeping</li></ul>
 <p class="contact">Lagos, Nigeria · <a href="mailto:rolandtemibada@gmail.com">rolandtemibada@gmail.com</a> · <a href="https://www.linkedin.com/in/badarolandfemi">LinkedIn</a></p>
 </header>
 
-<p class="note">All figures in these dashboards are sample data created for demonstration. They are modelled on the kind of work I’ve done, not real company records.</p>
+<p class="note">The first four dashboards use sample data created for demonstration, modelled on the kind of work I’ve done. They are not real company records. The Retail sales tab is rebuilt from my Power BI report.</p>
 
 <div class="tabs" role="tablist" id="tabs"></div>
 <section id="view"></section>
@@ -89,7 +89,7 @@ function line(L,V,col,fmt,lo){var w=340,h=190,m=26,s=svg(w,h),mn=lo,mx=Math.max.
  el(s,"polyline",{points:pts.map(function(p){return p.join(",")}).join(" "),fill:"none",stroke:col,"stroke-width":3,"stroke-linejoin":"round"});
  pts.forEach(function(p,i){el(s,"circle",{cx:p[0],cy:p[1],r:4,fill:col});el(s,"text",{x:p[0],y:p[1]-9,"text-anchor":"middle"},fmt?fmt(V[i]):V[i]);el(s,"text",{x:p[0],y:h-8,"text-anchor":"middle"},L[i])});return s}
 function stack(parts){var w=340,s=svg(w,70),x=0,tot=parts.reduce(function(a,p){return a+p.v},0);
- parts.forEach(function(p,i){var bw=w*p.v/tot;el(s,"rect",{x:x,y:8,width:bw,height:26,fill:p.c});el(s,"text",{x:x,y:56},p.l+": "+p.v);x+=bw});return s}
+ parts.forEach(function(p,i){var bw=w*p.v/tot;el(s,"rect",{x:x,y:8,width:bw,height:26,fill:p.c});var last=i===parts.length-1;el(s,"text",{x:last?w:x,y:56,"text-anchor":last?"end":"start"},p.l+": "+p.v);x+=bw});return s}
 var pct=function(v){return v+"%"};
 var D=[
 {id:"hse",name:"HSE safety",kpis:[["5","Sites covered"],["25","Workers"],["20","KPIs tracked"],["2.2","Incidents a month"]],
@@ -107,7 +107,12 @@ var D=[
 {id:"learn",name:"Training",kpis:[["450","Learners"],["80%","Completion rate"],["360","Completed"],["4","Course modules"]],
  p:[["Completion rate by module","Percent of learners who finished",function(){return hbars(["Computer basics","Internet use","Office tools","AI prompting","Cybersecurity"],[92,86,81,74,70],"var(--a)",pct,100)}],
     ["Completed vs not completed","450 learners",function(){return stack([{l:"Completed",v:360,c:"var(--a)"},{l:"Not completed",v:90,c:"var(--c)"}])}],
-    ["Learners per month","Enrolment by month",function(){return bars(["Nov","Dec","Jan","Feb","Mar","Apr"],[60,45,80,95,90,80],"var(--d)")}]]}
+    ["Learners per month","Enrolment by month",function(){return bars(["Nov","Dec","Jan","Feb","Mar","Apr"],[60,45,80,95,90,80],"var(--d)")}]]},
+{id:"retail",name:"Retail sales",n:"Rebuilt from my ShopSmart Retail Sales Analysis report in Power BI, using 2025 data. Figures are in naira.",kpis:[["₦7.58B","Sales"],["50,000","Orders"],["5,000","Customers"],["₦151.51K","Average order value"],["4.88%","Return rate"],["₦3.17B","Inventory value"]],
+ p:[["Monthly sales trend","Millions of naira, 2025",function(){return line(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],[647.1,566.6,652.9,612.5,649.3,609.8,633.0,650.1,624.4,639.6,629.8,660.7],"var(--a)",function(v){return Math.round(v)},540)}],
+ ["Revenue by state","Millions of naira",function(){return hbars(["Rivers","Kaduna","Anambra","Abuja","Oyo","Ogun","Kano","Lagos","Enugu","Delta"],[793.7,793.0,787.8,787.0,774.9,748.6,748.0,741.9,738.7,662.2],"var(--d)",function(v){return v.toFixed(0)},850)}],
+ ["Top 10 products","Millions of naira in revenue",function(){return hbars(["Home 400","Groceries 115","Groceries 331","Beauty 156","Home 458","Groceries 304","Electronics 291","Home 96","Groceries 329","Fashion 438"],[21.6,21.4,20.8,20.1,20.0,19.7,19.7,19.6,19.4,19.3],"var(--b)",function(v){return v.toFixed(1)},24)}],
+ ["Revenue by category","Share of total revenue",function(){return hbars(["Beauty","Groceries","Electronics","Fashion","Home"],[23,21,20,19,17],"var(--c)",pct,26)}]]}
 ];
 var tabs=document.getElementById("tabs"),view=document.getElementById("view");
 function show(i){
@@ -120,10 +125,11 @@ function show(i){
  d.p.forEach(function(p){var e=document.createElement("div");e.className="panel";
   var t=document.createElement("h3");t.textContent=p[0];var s=document.createElement("p");s.textContent=p[1];
   e.appendChild(t);e.appendChild(s);var c=p[2]();c.setAttribute("aria-label",p[0]);e.appendChild(c);g.appendChild(e)});
- view.appendChild(g);
+ view.appendChild(g);if(d.n){var q=document.createElement("p");q.className="note";q.textContent=d.n;view.appendChild(q)}
 }
 D.forEach(function(d,i){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.textContent=d.name;b.onclick=function(){show(i)};tabs.appendChild(b)});
 show(0);
 </script>
 </body>
 </html>
+b

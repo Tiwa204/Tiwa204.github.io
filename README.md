@@ -2,7 +2,7 @@
 
 Live site: https://tiwa204.github.io
 
-I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and financial records into dashboards that managers can act on. This portfolio has five dashboards: four samples, one for each area I've worked in, and a retail sales report I built in Power BI.
+I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and financial records into dashboards that managers can act on. This portfolio has six dashboards: five built on sample data, and a retail sales report I built in Power BI.
 
 ## Dashboards
 
@@ -11,8 +11,21 @@ I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and finan
 - **Finance:** spending against a ₦5M budget, receivables by age, and account reconciliation.
 - **Training:** completion rates by module for 450 learners.
 - **Retail sales:** monthly sales trend, revenue by state, top 10 products, and revenue by category, rebuilt from my ShopSmart Retail Sales Analysis report in Power BI (2025 data, ₦7.58B in sales across 50,000 orders).
+- **Airline operations:** punctuality, load factor, delay causes, and route profitability for a Nigerian domestic airline (8 routes, 6,000 flights, 2025). [Open the full interactive dashboard](https://tiwa204.github.io/airline.html), which has a route filter.
 
-**Note:** the first four dashboards use sample data created for demonstration. They are not real company records.
+**Note:** the HSE, Operations, Finance, Training and Airline dashboards use sample data created for demonstration. They are not real company records.
+
+## Airline analysis: key findings
+
+- Revenue peaks in December at ₦5.57B, against about ₦3.65B a month for January to November.
+- On-time performance falls to 58% in July and 55% in August, from 75% in January.
+- Departures from 18:00 are on time 59% of the time, against 75% for those before 10:00.
+- Weather is the largest cause of delays and cancellations, followed by late inbound aircraft.
+- Lagos–Abuja and Lagos–Port Harcourt earn about a 29% margin each. Lagos–Kano is roughly break-even despite a 75% load factor.
+
+## Data
+
+The `data` folder has the airline flight data (Excel with a formula-based route summary, and CSV) and the retail sales summary tables.
 
 ## Experience
 

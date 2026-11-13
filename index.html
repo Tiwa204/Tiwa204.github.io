@@ -46,12 +46,12 @@ footer{margin-top:30px;font-size:13px;color:var(--mute)}
 <div class="wrap">
 <header>
 <h1>Roland Bada</h1>
-<p class="lead">Data analyst who turns operational, safety and financial records into dashboards that managers can act on. Five dashboards are below: four samples, one for each area I’ve worked in, and a retail sales report I built in Power BI.</p>
+<p class="lead">Data analyst who turns operational, safety and financial records into dashboards that managers can act on. Six dashboards are below: five built on sample data, covering the areas I’ve worked in plus airline operations, and a retail sales report I built in Power BI.</p>
 <ul class="tags"><li>Power BI</li><li>SQL</li><li>Advanced Excel</li><li>n8n automation</li><li>HSE</li><li>Bookkeeping</li></ul>
 <p class="contact">Lagos, Nigeria · <a href="mailto:rolandtemibada@gmail.com">rolandtemibada@gmail.com</a> · <a href="https://www.linkedin.com/in/badarolandfemi">LinkedIn</a></p>
 </header>
 
-<p class="note">The first four dashboards use sample data created for demonstration, modelled on the kind of work I’ve done. They are not real company records. The Retail sales tab is rebuilt from my Power BI report.</p>
+<p class="note">The HSE, Operations, Finance, Training and Airline dashboards use sample data created for demonstration, modelled on the kind of work I’ve done. They are not real company records. The Retail sales tab is rebuilt from my Power BI report.</p>
 
 <div class="tabs" role="tablist" id="tabs"></div>
 <section id="view"></section>
@@ -80,9 +80,9 @@ function bars(L,V,col,fmt){var w=340,h=190,m=26,s=svg(w,h),mx=Math.max.apply(nul
   el(s,"text",{x:x+bw*.35,y:h-m-bh-5,"text-anchor":"middle"},fmt?fmt(v):v);
   el(s,"text",{x:x+bw*.35,y:h-8,"text-anchor":"middle"},L[i])});return s}
 function hbars(L,V,col,fmt,mx){var w=340,rh=34,h=L.length*rh+6,s=svg(w,h);mx=mx||Math.max.apply(null,V)*1.1;
- L.forEach(function(l,i){var y=i*rh+4,bw=(w-130)*V[i]/mx;
+ L.forEach(function(l,i){var y=i*rh+4,bw=Math.max(2,(w-130)*Math.abs(V[i])/mx);
   el(s,"text",{x:0,y:y+17},l);
-  el(s,"rect",{x:100,y:y+4,width:bw,height:16,rx:3,fill:col});
+  el(s,"rect",{x:100,y:y+4,width:bw,height:16,rx:3,fill:V[i]<0?"var(--c)":col});
   el(s,"text",{x:106+bw,y:y+17},fmt?fmt(V[i]):V[i])});return s}
 function line(L,V,col,fmt,lo){var w=340,h=190,m=26,s=svg(w,h),mn=lo,mx=Math.max.apply(null,V),n=V.length,pts=[];
  V.forEach(function(v,i){var x=20+i*(w-40)/(n-1),y=10+(h-m-20)*(1-(v-mn)/(mx-mn));pts.push([x,y])});
@@ -112,8 +112,14 @@ var D=[
  p:[["Monthly sales trend","Millions of naira, 2025",function(){return line(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],[647.1,566.6,652.9,612.5,649.3,609.8,633.0,650.1,624.4,639.6,629.8,660.7],"var(--a)",function(v){return Math.round(v)},540)}],
  ["Revenue by state","Millions of naira",function(){return hbars(["Rivers","Kaduna","Anambra","Abuja","Oyo","Ogun","Kano","Lagos","Enugu","Delta"],[793.7,793.0,787.8,787.0,774.9,748.6,748.0,741.9,738.7,662.2],"var(--d)",function(v){return v.toFixed(0)},850)}],
  ["Top 10 products","Millions of naira in revenue",function(){return hbars(["Home 400","Groceries 115","Groceries 331","Beauty 156","Home 458","Groceries 304","Electronics 291","Home 96","Groceries 329","Fashion 438"],[21.6,21.4,20.8,20.1,20.0,19.7,19.7,19.6,19.4,19.3],"var(--b)",function(v){return v.toFixed(1)},24)}],
- ["Revenue by category","Share of total revenue",function(){return hbars(["Beauty","Groceries","Electronics","Fashion","Home"],[23,21,20,19,17],"var(--c)",pct,26)}]]}
+ ["Revenue by category","Share of total revenue",function(){return hbars(["Beauty","Groceries","Electronics","Fashion","Home"],[23,21,20,19,17],"var(--c)",pct,26)}]]},
+{id:"air",name:"Airline",n:"Sample data for a Nigerian domestic airline: 8 routes and 6,000 flights in 2025. The full dashboard has a route filter and two more charts.",l:"https://tiwa204.github.io/airline.html",kpis:[["6,000","Flights"],["502,518","Passengers"],["75.3%","Load factor"],["67.4%","On-time flights"],["2.8%","Cancellation rate"],["19.1%","Operating margin"]],
+ p:[["Monthly revenue","Billions of naira, December peaks",function(){return bars(MON,[3.28,3.37,3.71,3.58,3.79,4.0,3.84,3.45,3.45,3.95,3.68,5.57],"var(--a)",function(v){return v.toFixed(1)})}],
+ ["On-time performance by month","Percent within 15 minutes, lowest in the rainy season",function(){return line(MON,[74.6,65.5,71.1,74.3,73.6,68.7,58.2,54.6,60.1,70.0,69.9,67.6],"var(--d)",function(v){return Math.round(v)},45)}],
+ ["Operating margin by route","Percent of revenue",function(){return hbars(["LOS-ABV","LOS-PHC","ABV-KAN","LOS-ENU","LOS-BNI","ABV-ENU","ABV-PHC","LOS-KAN"],[28.7,28.5,22.3,17.5,12.6,12.4,3.4,-1.3],"var(--d)",function(v){return v.toFixed(1)+"%"},35)}],
+ ["Delay and cancellation causes","Number of flights affected",function(){return hbars(["Weather","Late inbound","Technical","Air traffic control","Crew"],[712,424,348,315,272],"var(--c)")}]]}
 ];
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var tabs=document.getElementById("tabs"),view=document.getElementById("view");
 function show(i){
  Array.prototype.forEach.call(tabs.children,function(b,j){b.setAttribute("aria-selected",j===i?"true":"false")});
@@ -125,11 +131,10 @@ function show(i){
  d.p.forEach(function(p){var e=document.createElement("div");e.className="panel";
   var t=document.createElement("h3");t.textContent=p[0];var s=document.createElement("p");s.textContent=p[1];
   e.appendChild(t);e.appendChild(s);var c=p[2]();c.setAttribute("aria-label",p[0]);e.appendChild(c);g.appendChild(e)});
- view.appendChild(g);if(d.n){var q=document.createElement("p");q.className="note";q.textContent=d.n;view.appendChild(q)}
+ view.appendChild(g);if(d.n){var q=document.createElement("p");q.className="note";q.textContent=d.n;view.appendChild(q)}if(d.l){var a=document.createElement("a");a.href=d.l;a.target="_blank";a.rel="noopener";a.textContent="Open the full interactive dashboard";a.style.cssText="display:inline-block;margin-top:8px;color:var(--a);font-weight:600";view.appendChild(a)}
 }
 D.forEach(function(d,i){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.textContent=d.name;b.onclick=function(){show(i)};tabs.appendChild(b)});
 show(0);
 </script>
 </body>
 </html>
-b

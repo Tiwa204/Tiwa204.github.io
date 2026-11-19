@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Prince De Maritime — 5-Year P&amp;L Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#eef3f6;--card:#fff;--tx:#0c2340;--mut:#5a6b7b;--bd:#d6e0e7;--sea:#0e7c86;--brass:#b9841c;--pos:#12805c;--neg:#c0392b;--hd:#0c2340;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08131f;--card:#0f2132;--tx:#e6eef5;--mut:#93a6b8;--bd:#1f3649;--sea:#37b5bf;--brass:#e0a83c;--pos:#3ecf9b;--neg:#ff7a6b;--hd:#0f2132;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#08131f;--card:#0f2132;--tx:#e6eef5;--mut:#93a6b8;--bd:#1f3649;--sea:#37b5bf;--brass:#e0a83c;--pos:#3ecf9b;--neg:#ff7a6b;--hd:#0f2132;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Public Sans",system-ui,sans-serif}
+header{background:var(--hd);color:#fff;padding:22px 16px 18px}
+header h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.5px}
+header p{margin:4px 0 0;color:#a9c3d6;font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;padding:12px 16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--bd)}
+select,input{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
+.seg{display:flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;border:0;background:var(--card);color:var(--mut);padding:8px 14px;cursor:pointer}
+.seg button.on{background:var(--sea);color:#fff;font-weight:600}
+main{padding:14px 16px 30px;max-width:1200px;margin:auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.k{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--sea);border-radius:6px;padding:12px}
+.k:nth-child(2){border-left-color:var(--brass)}.k:nth-child(4){border-left-color:var(--pos)}
+.k small{color:var(--mut);display:block}.k b{font-size:24px;letter-spacing:-.5px}.k span{font-size:12px;display:block}
+.up{color:var(--pos)}.dn{color:var(--neg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:14px;min-width:0}
+.card h2{margin:0 0 8px;font-size:16px}
+.ch{position:relative;height:250px}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th,td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--bd)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mut);font-weight:600}th[data-k]{cursor:pointer}
+tr.t td{font-weight:800;background:color-mix(in srgb,var(--sea) 10%,transparent)}
+tr.p td{color:var(--mut);font-style:italic}
+.note{color:var(--mut);font-size:12px;margin:8px 0 0}
+</style></head><body>
+<header><h1>Prince De Maritime — Profit &amp; Loss</h1><p>Ship chandler · FY2022–FY2026 · 630 stock items across 5 stores · illustrative figures</p></header>
+<div class="bar">
+<select id="cat" aria-label="Store"></select>
+<select id="yr" aria-label="Year"></select>
+<div class="seg" id="cur"><button class="on" data-v="USD">USD $</button><button data-v="NGN">NGN ₦</button></div>
+</div>
+<main>
+<div class="kpis" id="kpis"></div>
+<div class="grid">
+<div class="card"><h2>Revenue, gross profit and net profit</h2><div class="ch"><canvas id="c1"></canvas></div></div>
+<div class="card"><h2>Revenue by store</h2><div class="ch"><canvas id="c2"></canvas></div></div>
+<div class="card"><h2>Margins (%)</h2><div class="ch"><canvas id="c3"></canvas></div></div>
+</div>
+<div class="card" style="margin-top:12px"><h2 id="plt">Profit &amp; loss statement</h2><div class="sc" id="pl"></div></div>
+<div class="card" style="margin-top:12px"><h2>Item performance</h2>
+<input id="q" placeholder="Search item or code" style="width:100%;max-width:320px;margin-bottom:8px">
+<div class="sc" id="it"></div><p class="note" id="cnt"></p></div>
+</main>
+<script>
+const YR=[2022,2023,2024,2025,2026],FX=[440,760,1480,1550,1500],DEM=[.8,.95,1.1,1.2,1.32];
+const R=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296},rnd=R(2026);
+const V=["Std","Premium","Bulk","Economy","Select"];
+const C={
+"Provisions":{p:"PRV",c:[1.5,90],m:[.15,.3],q:[300,4000],i:.08,n:"Rice,Wheat Flour,Vegetable Oil,Sugar,Salt,Spaghetti,Beans,Garri,Tomato Paste,Frozen Chicken,Beef,Fresh Fish,Eggs,Milk Powder,Tea,Coffee,Yam,Onions,Canned Sardines,Bottled Water"},
+"Cabin Store":{p:"CAB",c:[3,350],m:[.2,.4],q:[60,900],i:.05,n:"Bed Sheet Set,Pillow,Mattress,Blanket,Towel,Curtain,Cabin Fan,LED Lamp,Door Lock,Mirror,Carpet,Mosquito Net,Hangers,Waste Bin,Kettle,Mini Fridge,AC Filter,Soap Dispenser,Toilet Roll,Detergent,Bath Mat,Shower Hose,Basin Tap,Desk Chair,Cabin Heater,Safe Box,Clothes Iron,Cleaning Mop,Bunk Ladder,Wall Clock"},
+"Engine Store":{p:"ENG",c:[15,4500],m:[.15,.3],q:[8,200],i:.05,n:"Lube Oil,Hydraulic Oil,Fuel Filter,Oil Filter,Air Filter,Piston Ring,Cylinder Liner,Fuel Injector,Turbocharger Kit,Gasket Set,Bearing,Shaft Seal,V-Belt,Water Pump,Heat Exchanger Tube,Zinc Anode,Valve,Glow Plug,Pressure Gauge,Thermometer,Hose Clamp,Coolant,Grease,Welding Rod,Bolt Set,O-Ring Kit,Starter Motor,Alternator,Battery 12V,Exhaust Hose"},
+"Deck Store":{p:"DCK",c:[8,2500],m:[.18,.35],q:[15,400],i:.05,n:"Mooring Rope,Wire Rope,Shackle,Anchor Chain,Anchor,Fender,Marine Paint,Primer,Thinner,Brush & Roller,Rust Remover,Tarpaulin,Cargo Net,Hatch Seal,Turnbuckle,Pulley Block,Winch Grease,Chipping Hammer,Deck Scrubber,Hose Pipe,Searchlight,Navigation Lamp,Flag,Pilot Ladder,Safety Net,Padlock,Swivel,Lashing Strap,Sounding Tape,Binocular"},
+"Safety & PPE":{p:"SAF",c:[6,900],m:[.22,.4],q:[20,500],i:.05,n:"Hard Hat,Safety Boot,Coverall,Gloves,Goggles,Ear Muff,Life Jacket,Lifebuoy,Fire Extinguisher,Harness,Gas Detector,First Aid Kit,Respirator,Immersion Suit,EPIRB Battery,Flare"}};
+const items=[];
+for(const[k,d]of Object.entries(C)){let id=0;d.n.split(",").forEach(b=>V.forEach(v=>{
+const c0=d.c[0]*Math.pow(d.c[1]/d.c[0],rnd()),mk=d.m[0]+rnd()*(d.m[1]-d.m[0]),g=-.02+rnd()*.2,q0=(d.q[0]+rnd()*(d.q[1]-d.q[0]))*Math.pow(c0/d.c[0],-.3);
+const it={cat:k,code:d.p+"-"+String(++id).padStart(3,"0"),name:b+" – "+v,c:[],p:[],q:[]};
+YR.forEach((_,y)=>{const c=c0*Math.pow(1+d.i,y)*(.97+rnd()*.06);it.c.push(c);it.p.push(c*(1+mk+(rnd()-.5)*.04));it.q.push(Math.max(1,Math.round(q0*DEM[y]*Math.pow(1+g,y)*(.88+rnd()*.24))))});
+items.push(it)}))}
+const L=[["Staff & payroll",.075],["Port, customs & logistics",.045],["Warehousing & storage",.022],["Launch boat & delivery",.028],["Admin & insurance",.018],["Depreciation",.015]];
+const OP=YR.map(()=>L.map(l=>l[1]*(.92+rnd()*.16)));
+const s={cat:"All",yr:4,cur:"USD",q:"",k:"gp",d:-1},ch={};
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const m=y=>s.cur==="NGN"?FX[y]:1,sym=()=>s.cur==="NGN"?"₦":"$";
+const cp=v=>(v<0?"−":"")+sym()+new Intl.NumberFormat("en",{notation:"compact",maximumFractionDigits:2}).format(Math.abs(v));
+const fl=v=>v<0?"("+Math.abs(Math.round(v)).toLocaleString("en")+")":Math.round(v).toLocaleString("en");
+const sum=a=>a.reduce((x,y)=>x+y,0),pc=(a,b)=>b?(a/b*100):0;
+function pl(cat){
+const rev=YR.map(()=>0),cg=YR.map(()=>0);
+items.filter(i=>cat==="All"||i.cat===cat).forEach(i=>YR.forEach((_,y)=>{rev[y]+=i.p[y]*i.q[y]*m(y);cg[y]+=i.c[y]*i.q[y]*m(y)}));
+const gp=rev.map((r,y)=>r-cg[y]),ox=L.map((_,j)=>rev.map((r,y)=>r*OP[y][j])),tox=YR.map((_,y)=>sum(ox.map(o=>o[y]))),op=gp.map((g,y)=>g-tox[y]),fin=rev.map(r=>r*.012),pbt=op.map((o,y)=>o-fin[y]),tax=pbt.map(p=>Math.max(0,p)*.3),net=pbt.map((p,y)=>p-tax[y]);
+return{rev,cg,gp,ox,tox,op,fin,pbt,tax,net}}
+function mk(id,cfg){if(ch[id])ch[id].destroy();ch[id]=new Chart(document.getElementById(id),cfg)}
+function render(){
+Chart.defaults.color=css("--mut");Chart.defaults.borderColor=css("--bd");
+const P=pl(s.cat),y=s.yr,sea=css("--sea"),br=css("--brass"),pos=css("--pos");
+const ch$=(a)=>y?(a[y]-a[y-1])/Math.abs(a[y-1])*100:null;
+const kp=[["Revenue",P.rev,0],["Gross profit",P.gp,P.gp[y]&&pc(P.gp[y],P.rev[y])],["Operating expenses",P.tox,0],["Net profit",P.net,pc(P.net[y],P.rev[y])]];
+document.getElementById("kpis").innerHTML=kp.map(([t,a,mg],i)=>{const c=ch$(a),bad=i==2?c>0:c<0;return`<div class="k"><small>${t} · ${YR[y]}</small><b>${cp(a[y])}</b><span class="${c==null?"":bad?"dn":"up"}">${c==null?"Base year":(c>0?"▲ ":"▼ ")+Math.abs(c).toFixed(1)+"% vs "+YR[y-1]}${i%2&&i>0?" · "+mg.toFixed(1)+"% margin":""}</span></div>`}).join("");
+mk("c1",{type:"bar",data:{labels:YR,datasets:[{label:"Revenue",data:P.rev,backgroundColor:sea},{label:"Gross profit",data:P.gp,backgroundColor:br},{label:"Net profit",data:P.net,backgroundColor:pos}]},options:{maintainAspectRatio:false,scales:{y:{ticks:{callback:cp}}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+": "+cp(c.raw)}}}}});
+const cols=[sea,br,pos,"#7a5cc8","#d1584a"],cs=Object.keys(C);
+mk("c2",{type:"bar",data:{labels:YR,datasets:cs.map((k,j)=>({label:k,backgroundColor:cols[j],data:YR.map((_,t)=>items.filter(i=>i.cat===k).reduce((a,i)=>a+i.p[t]*i.q[t]*m(t),0))}))},options:{maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:cp}}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+": "+cp(c.raw)}}}}});
+mk("c3",{type:"line",data:{labels:YR,datasets:[{label:"Gross margin",data:P.gp.map((g,t)=>pc(g,P.rev[t])),borderColor:br,backgroundColor:br,tension:.3},{label:"Operating margin",data:P.op.map((g,t)=>pc(g,P.rev[t])),borderColor:sea,backgroundColor:sea,tension:.3},{label:"Net margin",data:P.net.map((g,t)=>pc(g,P.rev[t])),borderColor:pos,backgroundColor:pos,tension:.3}]},options:{maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>v+"%"}}}}});
+const row=(l,a,c)=>`<tr class="${c||""}"><td>${l}</td>${a.map(v=>`<td>${typeof v=="string"?v:fl(v)}</td>`).join("")}<td>${typeof a[0]=="string"?"":fl(sum(a))}</td></tr>`;
+const pr=(l,n,d)=>{const a=n.map((v,t)=>pc(v,d[t])+"%");return`<tr class="p"><td>${l}</td>${n.map((v,t)=>`<td>${pc(v,d[t]).toFixed(1)}%</td>`).join("")}<td>${pc(sum(n),sum(d)).toFixed(1)}%</td></tr>`};
+document.getElementById("plt").textContent="Profit & loss statement — "+(s.cat==="All"?"all stores":s.cat)+" ("+s.cur+")";
+document.getElementById("pl").innerHTML=`<table><tr><th>Line</th>${YR.map(v=>`<th>FY${v}</th>`).join("")}<th>5-yr total</th></tr>`+row("Revenue",P.rev,"t")+row("Cost of goods sold",P.cg)+row("Gross profit",P.gp,"t")+pr("Gross margin",P.gp,P.rev)+L.map((l,j)=>row(l[0],P.ox[j])).join("")+row("Total operating expenses",P.tox)+row("Operating profit",P.op,"t")+row("Finance costs",P.fin)+row("Profit before tax",P.pbt)+row("Income tax (30%)",P.tax)+row("Net profit",P.net,"t")+pr("Net margin",P.net,P.rev)+"</table>";
+items_()}
+function items_(){
+const y=s.yr,q=s.q.toLowerCase();
+let a=items.filter(i=>(s.cat==="All"||i.cat===s.cat)&&(i.name+i.code).toLowerCase().includes(q)).map(i=>({...i,uc:i.c[y]*m(y),up:i.p[y]*m(y),qt:i.q[y],rv:i.p[y]*i.q[y]*m(y),gp:(i.p[y]-i.c[y])*i.q[y]*m(y),mg:(1-i.c[y]/i.p[y])*100}));
+a.sort((u,v)=>typeof u[s.k]=="string"?s.d*u[s.k].localeCompare(v[s.k]):s.d*(u[s.k]-v[s.k]));
+const H=[["code","Code"],["name","Item"],["cat","Store"],["uc","Unit cost"],["up","Unit price"],["qt","Qty sold"],["rv","Revenue"],["gp","Gross profit"],["mg","Margin"]];
+document.getElementById("it").innerHTML="<table><tr>"+H.map(([k,l])=>`<th data-k="${k}">${l}${s.k===k?(s.d<0?" ▼":" ▲"):""}</th>`).join("")+"</tr>"+a.slice(0,40).map(i=>`<tr><td>${i.code}</td><td>${i.name}</td><td>${i.cat}</td><td>${sym()}${i.uc.toLocaleString("en",{maximumFractionDigits:2})}</td><td>${sym()}${i.up.toLocaleString("en",{maximumFractionDigits:2})}</td><td>${i.qt.toLocaleString("en")}</td><td>${cp(i.rv)}</td><td>${cp(i.gp)}</td><td>${i.mg.toFixed(1)}%</td></tr>`).join("")+"</table>";
+document.getElementById("cnt").textContent="Showing "+Math.min(40,a.length)+" of "+a.length+" items for FY"+YR[y]+". Click a column heading to sort."}
+const $=id=>document.getElementById(id);
+$("cat").innerHTML='<option value="All">All stores (630 items)</option>'+Object.keys(C).map(k=>`<option>${k} (${items.filter(i=>i.cat===k).length})</option>`).join("");
+$("cat").innerHTML=$("cat").innerHTML.replace(/<option>([^<(]+) \(/g,'<option value="$1">$1 (');
+$("yr").innerHTML=YR.map((v,i)=>`<option value="${i}"${i==4?" selected":""}>FY${v}</option>`).join("");
+$("cat").onchange=e=>{s.cat=e.target.value;render()};
+$("yr").onchange=e=>{s.yr=+e.target.value;render()};
+$("cur").onclick=e=>{const v=e.target.dataset.v;if(!v)return;s.cur=v;[...$("cur").children].forEach(b=>b.classList.toggle("on",b.dataset.v===v));render()};
+$("q").oninput=e=>{s.q=e.target.value;items_()};
+$("it").onclick=e=>{const k=e.target.dataset.k;if(!k)return;s.d=s.k===k?-s.d:-1;s.k=k;items_()};
+render();
+</script></body></html>

@@ -12,7 +12,7 @@ I'm a data analyst based in Lagos, Nigeria. I turn operational, safety and finan
 - **Training:** completion rates by module for 450 learners.
 - **Retail sales:** monthly sales trend, revenue by state, top 10 products, and revenue by category, rebuilt from my ShopSmart Retail Sales Analysis report in Power BI (2025 data, ₦7.58B in sales across 50,000 orders).
 - **Airline operations:** punctuality, load factor, delay causes, and route profitability for a Nigerian domestic airline (8 routes, 6,000 flights, 2025). [Open the full interactive dashboard](https://tiwa204.github.io/airline.html), which has a route filter.
-
+- **Profit & loss:** five-year P&L for a ship chandler, covering 630 stock items across provisions, cabin, engine, deck and safety stores. It shows yearly revenue, margins, expenses and net profit, with an item-level table. [View dashboard](https://tiwa204.github.io/maritime-pnl.html)
 **Note:** the HSE, Operations, Finance, Training and Airline dashboards use sample data created for demonstration. They are not real company records.
 
 ## Airline analysis: key findings
